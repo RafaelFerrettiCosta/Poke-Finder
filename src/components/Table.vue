@@ -1,7 +1,7 @@
 <template>
   <div class="main-holder">
     <div class="table">
-      <div class="pokemon-holder" v-for='(pokemon, index) in pokemons' :key='pokemon.name'>
+      <div class="pokemon-holder" v-for='(pokemon, index) in filteredPokemons' :key='pokemon.name'>
         <span class="id-text">#{{pokemon.id}}</span>
         <img v-bind:src="pokemon.sprites.front_default" alt="">
         <span class="name-text">{{pokemon.name}}</span>
@@ -16,6 +16,7 @@
   import DetailsModal from './DetailsModal'
   export default {
     name: 'Table',
+    props: ["teste"],
     components: {
       DetailsModal
     },
@@ -25,14 +26,20 @@
       }
     },
     mounted() {
-      for (var p = 1; p <= 20; p++) {
+      for (var p = 1; p <= 1000; p++) {
         api.get('https://pokeapi.co/api/v2/pokemon/' + p).then(response => {
           console.log(response.data);
-          this.pokemons.push(response.data)
-          localStorage.setItem('pokelist', JSON.stringify(response.data))
+          this.pokemons.push(response.data)    
         })
       }
-
+      localStorage.setItem('pokelist', JSON.stringify(this.pokemons))
+    },
+    computed: {
+      filteredPokemons: function(){
+        return this.pokemons.filter((pokemon) =>{
+          return pokemon.name.match(this.teste);
+        });
+      }
     }
 
   }

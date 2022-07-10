@@ -3,7 +3,7 @@
     <Header />
     <main class="content-holder">
       <SearchBar />
-      <Table />
+      <!-- <Table /> -->
     </main>
   </div>
 </template>
@@ -13,14 +13,14 @@ import './styles/global.css';
 
 import Header from './components/Header';
 import SearchBar from './components/SearchBar';
-import Table from './components/Table';
+// import Table from './components/Table';
 
 export default {
   name: 'App',
   components: {
     Header,
     SearchBar,
-    Table
+    // Table
   }
 }
 </script>

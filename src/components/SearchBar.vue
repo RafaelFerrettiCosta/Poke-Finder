@@ -1,7 +1,7 @@
 <template>
   <div class="main-holder">
     <div class="text-filter">
-      <input class="search-box" type="text" placeholder="Procurar...">
+      <input class="search-box" type="text" v-model='search' placeholder="Procurar...">
       <button class="search-button">
         <img class="button-img" src="../assets/lupa.png" alt="">
       </button>
@@ -48,19 +48,29 @@
 
 
     </div>
+    <Table :teste="search" />
   </div>
 </template>
 
 <script>
+  import Table from './Table'
+
   export default {
-    name: 'SearchBar'
+    name: 'SearchBar',
+    components: {
+      Table,
+    },
+    data(){
+      return {
+        search:''
+      }
+    }
   }
 </script>
 
 <style scoped>
   .main-holder {
     width: 100%;
-    padding: 10px 50px;
     display: grid;
     justify-content: center;
     align-items: center;
