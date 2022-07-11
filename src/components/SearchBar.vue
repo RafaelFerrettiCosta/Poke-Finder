@@ -2,45 +2,32 @@
   <div class="main-holder">
     <div class="text-filter">
       <input class="search-box" type="text" v-model='search' placeholder="Procurar...">
-      <button class="search-button">
-        <img class="button-img" src="../assets/lupa.png" alt="">
-      </button>
     </div>
 
     <div class="options">
       <div class="container-type filter">
         <label for="type">Tipo</label>
         <select name="type" id="type">
-          <option value="rock">Todos</option>
-          <option value="rock">Pedra</option>
-          <option value="rock">Fada</option>
+          <option value="">Todos</option>
+          <option v-for="t in types" :key="t.name" :value="t.name">{{t.name}}</option>
         </select>
       </div>
 
       <div class="container-gen filter">
         <label for="generation">Geração</label>
-        <select name="type" id="type">
-          <option value="rock">Todas</option>
-          <option value="gen-1">Gen I</option>
-          <option value="gen-2">Gen II</option>
-          <option value="gen-3">Gen III</option>
-          <option value="gen-4">Gen IV</option>
-          <option value="gen-5">Gen V</option>
-          <option value="gen-6">Gen VI</option>
-          <option value="gen-7">Gen VII</option>
-          <option value="gen-8">Gen VIII</option>
-          <option value="gen-9">Gen IX</option>
-          <option value="gen-10">Gen X</option>
+        <select name="type" id="generation">
+          <option value="">Todas</option>
+          <option v-for="g in gens" :key="g.name" :value="g.name">{{g.name}}</option>
         </select>
       </div>
 
       <div class="container-orderby filter">
         <label for="order-by">Ordenar por</label>
         <select name="type" id="type">
-          <option value="name">Nome [A-Z]</option>
-          <option value="rev-name">Nome [Z-A]</option>
           <option value="id">ID [Menor-Maior]</option>
           <option value="rev-id">ID [Maior-Menor]</option>
+          <option value="name">Nome [A-Z]</option>
+          <option value="rev-name">Nome [Z-A]</option>
         </select>
       </div>
 
@@ -48,12 +35,13 @@
 
 
     </div>
-    <Table :teste="search" />
+    <Table :text="search" :type="type" :gen="gen" />
   </div>
 </template>
 
 <script>
-  import Table from './Table'
+  import Table from './Table';
+  import api from '../services/api';
 
   export default {
     name: 'SearchBar',
@@ -62,8 +50,22 @@
     },
     data(){
       return {
-        search:''
+        search:'',
+        type:'Todos',
+        gen:'Todas',
+        types: [],
+        gens:[]
       }
+    },
+    mounted() {
+        api.get('https://pokeapi.co/api/v2/type/').then(response => {
+          console.log(response.data.results);
+          this.types=(response.data.results);    
+        });
+        api.get('https://pokeapi.co/api/v2/generation/').then(response => {
+          console.log(response.data.results);
+          this.gens=(response.data.results);    
+        });
     }
   }
 </script>
@@ -88,17 +90,7 @@
     font-size: 1.25rem;
     padding: 5px 5px 5px 15px;
     border: 1px solid lightgray;
-    border-top-left-radius: 20px;
-    border-bottom-left-radius: 20px;
-  }
-
-  .search-button {
-    background-color: var(--color-red);
-    border: none;
-    border: 5px solid var(--color-red);
-    border-bottom-right-radius: 30px;
-    border-top-right-radius: 30px;
-    padding-right: 5px;
+    border-radius: 20px;
   }
 
   .button-img {
@@ -109,6 +101,10 @@
     display: flex;
     justify-content: space-between;
     gap: 80px;
+  }
+
+  option{
+    text-transform: capitalize;
   }
 
 

@@ -1,4 +1,5 @@
 <template>
+  <!-- construtor dos itens da tabela -->
   <div class="main-holder">
     <div class="table">
       <div class="pokemon-holder" v-for='(pokemon, index) in filteredPokemons' :key='pokemon.name'>
@@ -16,28 +17,43 @@
   import DetailsModal from './DetailsModal'
   export default {
     name: 'Table',
-    props: ["teste"],
+    props: ["text","type","gen"],
     components: {
       DetailsModal
     },
     data() {
       return {
-        pokemons: []
+        pokemons: [],
+        counter:0
       }
     },
     mounted() {
-      for (var p = 1; p <= 1000; p++) {
+      //loop feito para acessar a 'camada especifica' de cada pokemon na API
+      api.get('https://pokeapi.co/api/v2/pokemon/').then(response => {
+        console.log("taaa AQUIII"+response.data.count)
+        this.counter=response.data.count
+      }).then(r =>{
+        for (var p = 1; p <= this.counter; p++) {
         api.get('https://pokeapi.co/api/v2/pokemon/' + p).then(response => {
-          console.log(response.data);
           this.pokemons.push(response.data)    
         })
       }
-      localStorage.setItem('pokelist', JSON.stringify(this.pokemons))
+      })
+      const setLocalStorage = async () => {
+    try {
+      await localStorage.setItem("pokelist", JSON.stringify(this.pokemons))
+    } catch (err) {
+        // Handle Error Here
+        console.error(err);
+    }
+};
+
     },
+    // filtro para a barra de pesquisa aceitar tanto nome quanto ID's
     computed: {
       filteredPokemons: function(){
         return this.pokemons.filter((pokemon) =>{
-          return pokemon.name.match(this.teste);
+          return pokemon.name.match(this.text) || JSON.stringify(pokemon.id).match(this.text);
         });
       }
     }
