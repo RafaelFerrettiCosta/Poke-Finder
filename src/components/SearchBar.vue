@@ -101,6 +101,7 @@
     display: flex;
     justify-content: space-between;
     gap: 80px;
+    flex-wrap: nowrap;
   }
 
   option{

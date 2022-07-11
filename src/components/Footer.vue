@@ -54,7 +54,7 @@
     background-color: var(--color-white);
     display: grid;
     grid-template-columns: 3fr 1fr;
-    padding: 30px 0px 30px 20px;
+    padding: 20px 0px 20px 20px;
   }
 
   .short-t {
@@ -73,6 +73,7 @@
   .links{
     display: flex;
     align-items: center;
+    gap: 5px;
   }
 
 </style>

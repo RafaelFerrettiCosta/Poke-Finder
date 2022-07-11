@@ -25,30 +25,27 @@
     data() {
       return {
         pokemons: [],
-        counter:0,
+        counter:[],
         showModal: false
       }
     },
     mounted() {
       //loop feito para acessar a 'camada especifica' de cada pokemon na API
-      api.get('https://pokeapi.co/api/v2/pokemon/').then(response => {
-        console.log("taaa AQUIII"+response.data.count)
-        this.counter=response.data.count
+      api.get('https://pokeapi.co/api/v2/pokemon/?offset=0&limit=9999').then(response => {
+        this.counter=response.data.results
+        // this.counter.length
       }).then(r =>{
-        for (var p = 1; p <= 10; p++) {
+        for (var p = 1; p <= 50; p++) {
         api.get('https://pokeapi.co/api/v2/pokemon/' + p).then(response => {
-          this.pokemons.push(response.data)    
+          this.pokemons.push(response.data) 
+          
+          localStorage.pokemonList = JSON.stringify(this.pokemons);   
         })
       }
       })
-      const setLocalStorage = async () => {
-    try {
-      await localStorage.setItem("pokelist", JSON.stringify(this.pokemons))
-    } catch (err) {
-        // Handle Error Here
-        console.error(err);
-    }
-};
+      // console.log(this.pokemons)
+      // localStorage.setItem("pokelist", JSON.stringify(this.pokemons))
+
 
     },
     // filtro para a barra de pesquisa aceitar tanto nome quanto ID's
