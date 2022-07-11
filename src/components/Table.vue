@@ -2,11 +2,12 @@
   <!-- construtor dos itens da tabela -->
   <div class="main-holder">
     <div class="table">
-      <div class="pokemon-holder" v-for='(pokemon, index) in filteredPokemons' :key='pokemon.name'>
+      <div class="pokemon-holder" v-for='(pokemon, index) in filteredPokemons' :key='pokemon.name' @click="showModal = true">
         <span class="id-text">#{{pokemon.id}}</span>
         <img v-bind:src="pokemon.sprites.front_default" alt="">
         <span class="name-text">{{pokemon.name}}</span>
-        <DetailsModal/>
+          <DetailsModal v-show="showModal" @close-modal="showModal=false"/>
+
       </div>
     </div>
   </div>
@@ -24,7 +25,8 @@
     data() {
       return {
         pokemons: [],
-        counter:0
+        counter:0,
+        showModal: false
       }
     },
     mounted() {
@@ -33,7 +35,7 @@
         console.log("taaa AQUIII"+response.data.count)
         this.counter=response.data.count
       }).then(r =>{
-        for (var p = 1; p <= this.counter; p++) {
+        for (var p = 1; p <= 10; p++) {
         api.get('https://pokeapi.co/api/v2/pokemon/' + p).then(response => {
           this.pokemons.push(response.data)    
         })
@@ -67,12 +69,11 @@
   }
 
   .main-holder {
-    max-width: 1000px;
     margin: 30px 20px;
   }
 
   .table {
-    width: 100%;
+    width: 700px;
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
     gap: 20px;
@@ -86,6 +87,10 @@
     max-width: 600px;
     justify-items: center;
     box-shadow: 2px 5px grey;
+  }
+
+  .pokemon-holder:hover{
+    cursor: pointer;
   }
 
   .name-text {
