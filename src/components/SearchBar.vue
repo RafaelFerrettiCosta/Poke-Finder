@@ -19,7 +19,7 @@
 
 
     </div>
-    <Table :text="search" :type="type" :gen="gen" />
+    <Table :text="search" />
   </div>
 </template>
 
