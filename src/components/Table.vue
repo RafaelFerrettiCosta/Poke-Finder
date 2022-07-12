@@ -3,11 +3,11 @@
   <div class="main-holder">
     <div class="table">
       <div class="pokemon-holder" v-for='(pokemon, index) in filteredPokemons' :key='pokemon.name' @click="showModal = true">
-        <span class="id-text">#{{pokemon.id}}</span>
-        <img v-bind:src="pokemon.sprites.front_default" alt="">
+        <span class="id-text">#{{pokemon.url.slice(34,-1)}}</span>
+        <img v-bind:src="'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/'+pokemon.url.slice(34,-1)+'.png'" alt="">
         <span class="name-text">{{pokemon.name}}</span>
         <div class="types">
-          <span class="type"
+          <!-- <span class="type"
           v-for="(type, index) in pokemon.types"
           v-bind:style="type.type.name=='normal' ? 'background:#A8A878' :
           type.type.name=='fighting' ? 'background:#C03028' :
@@ -30,9 +30,9 @@
           type.type.name=='unknown' ? 'background:#68A090' : 
           'background:grey'
           " 
-          :key="index">{{type.type.name}}</span>
+          :key="index">{{type.type.name}}</span> -->
         </div>
-          <DetailsModal v-show="showModal" @close-modal="showModal=false"/>
+        <DetailsModal v-show="showModal" @close-modal="showModal=false" />
 
       </div>
     </div>
@@ -44,32 +44,47 @@
   import DetailsModal from './DetailsModal'
   export default {
     name: 'Table',
-    props: ["text","type","gen"],
+    props: ["text", "type", "gen"],
     components: {
       DetailsModal
     },
     data() {
       return {
         pokemons: [],
-        counter:[],
+        counter: [],
         showModal: false
       }
     },
     mounted() {
       //loop feito para acessar a 'camada especifica' de cada pokemon na API
-      api.get('https://pokeapi.co/api/v2/pokemon/?offset=0&limit=9999').then(response => {
-        this.counter=response.data.results
-        // this.counter.length
-      }).then(r =>{
-        for (var p = 1; p <= 50; p++) {
-        api.get('https://pokeapi.co/api/v2/pokemon/' +p+'').then(response => {
-          console.log(response.data)
-          
-          this.pokemons.push(response.data);           
-          localStorage.pokemonList = JSON.stringify(this.pokemons);   
-        })
+      async function montarLocalStorage() {
+        var page = 0
+        let result = await api.get('https://pokeapi.co/api/v2/pokemon/?offset=0&limit=100')
+        var next = await result.data.next;
+        localStorage.setItem("pokelist0", JSON.stringify(result.data.results))
+        while (next !== null) {
+          page++;
+          result = await api.get(next)
+          next = await result.data.next;
+          localStorage.setItem("pokelist" + page, JSON.stringify(result.data.results))
+
+        }
       }
-      })
+      montarLocalStorage();
+      // console.log("vencemos e esta AQUI" + holder)
+      // api.get('https://pokeapi.co/api/v2/pokemon/?offset=0&limit=9999').then(response => {
+      //   this.counter = response.data.results
+      //   // this.counter.length
+      // }).then(r => {
+      //   for (var p = 1; p <= 50; p++) {
+      //     api.get('https://pokeapi.co/api/v2/pokemon/' + p + '').then(response => {
+      //       console.log(response.data)
+
+      //       this.pokemons.push(response.data);
+      //       localStorage.pokemonList = JSON.stringify(this.pokemons);
+      //     })
+      //   }
+      // })
       // console.log(this.pokemons)
       // localStorage.setItem("pokelist", JSON.stringify(this.pokemons))
 
@@ -77,10 +92,14 @@
     },
     // filtro para a barra de pesquisa aceitar tanto nome quanto ID's
     computed: {
-      filteredPokemons: function(){
-        console.log(+this.pokemons)
-        return this.pokemons.filter((pokemon) =>{
-          return pokemon.name.match(this.text) || JSON.stringify(pokemon.id).match(this.text);
+      filteredPokemons: function () {
+        this.pokemons = localStorage.getItem("pokelist0")
+        this.pokemons = JSON.parse(this.pokemons || '[]')
+        var pokeID = ''
+
+        return this.pokemons.filter((pokemon) => {
+          pokeID = (pokemon.url.slice(34, -1))
+          return pokemon.name.match(this.text) || JSON.stringify(pokeID).match(this.text);
         });
       }
     }
@@ -114,7 +133,7 @@
     box-shadow: 2px 5px grey;
   }
 
-  .pokemon-holder:hover{
+  .pokemon-holder:hover {
     cursor: pointer;
   }
 
@@ -124,20 +143,20 @@
     text-transform: capitalize;
   }
 
-  .id-text{
+  .id-text {
     font-size: 1.4rem;
     position: absolute;
     right: 10px;
     top: 8px;
   }
 
-  .types{
+  .types {
     display: flex;
     flex-wrap: wrap;
     gap: 10px;
   }
 
-  .type{
+  .type {
     text-transform: uppercase;
     color: #fff;
     padding: 2px 8px;
