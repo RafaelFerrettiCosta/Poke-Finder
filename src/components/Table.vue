@@ -2,47 +2,23 @@
   <!-- construtor dos itens da tabela -->
   <div class="main-holder">
     <div class="button-holder">
+      <!-- ao clicar no botão chama função setIndex que por sua vez altera o valor que local storage procura -->
+      <!-- adicionando um v-if para adicionar 0 aos valores de 1 digito -->
       <button class="page-button" v-for="index in pagesCount" v-if="index<10" @click="setIndex(index)">0{{index}}</button>
       <button class="page-button" v-for="index in pagesCount" v-if="index>=10" @click="setIndex(index)">{{index}}</button>
+
     </div>
     <div class="table">
+      <!-- cada pokemon é carregado a partir da primeira camada da API, extraindo o ID de cada a partir da URL -->
       <div class="pokemon-holder" v-for='(pokemon, index) in filteredPokemons' :key='pokemon.name' @click="showModal = true">
         <span class="id-text">#{{pokemon.url.slice(34,-1)}}</span>
-        <img v-bind:src="'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/'+pokemon.url.slice(34,-1)+'.png'" alt="">
+        <img v-bind:src="'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/'+pokemon.url.slice(34,-1)+'.png'" @error="setAltImg" alt="">
         <span class="name-text">{{pokemon.name}}</span>
         <div class="types">
-          <!-- <span class="type"
-          v-for="(type, index) in pokemon.types"
-          v-bind:style="type.type.name=='normal' ? 'background:#A8A878' :
-          type.type.name=='fighting' ? 'background:#C03028' :
-          type.type.name=='flying' ? 'background:#A890F0' :
-          type.type.name=='poison' ? 'background:#A040A0' :
-          type.type.name=='ground' ? 'background:#E0C068' :
-          type.type.name=='rock' ? 'background:#B8A038' :
-          type.type.name=='bug' ? 'background:#A8B820' :
-          type.type.name=='ghost' ? 'background:#705898' :
-          type.type.name=='steel' ? 'background:#B8B8D0' :
-          type.type.name=='fire' ? 'background:#F08030' :
-          type.type.name=='water' ? 'background:#6890F0' :
-          type.type.name=='grass' ? 'background:#78C850' :
-          type.type.name=='electric' ? 'background:#F8D030' :
-          type.type.name=='psychic' ? 'background:#F85888' :
-          type.type.name=='ice' ? 'background:#98D8D8' :
-          type.type.name=='dragon' ? 'background:#7038F8' :
-          type.type.name=='dark' ? 'background:#68A090' :
-          type.type.name=='fairy' ? 'background:#EE99AC' :
-          type.type.name=='unknown' ? 'background:#68A090' : 
-          'background:grey'
-          " 
-          :key="index">{{type.type.name}}</span> -->
         </div>
         <DetailsModal v-show="showModal" @close-modal="showModal=false" />
 
       </div>
-    </div>
-    <div class="button-holder">
-      <button class="page-button" v-for="index in pagesCount" v-if="index<10" @click="setIndex(index)">0{{index}}</button>
-      <button class="page-button" v-for="index in pagesCount" v-if="index>=10" @click="setIndex(index)">{{index}}</button>
     </div>
   </div>
 </template>
@@ -52,14 +28,16 @@
   import DetailsModal from './DetailsModal'
   export default {
     name: 'Table',
-    props: ["text", "type", "gen"],
+    props: ["text"],
     components: {
       DetailsModal
     },
     methods: {
       setIndex: function (i) {
         this.index = i;
-        console.log(this.index)
+      },
+      setAltImg(event) {
+        // event.target.src = "../assets/pokeapi.png"
       }
     },
     data() {
@@ -89,8 +67,8 @@
       console.log(this.pagesCount)
 
     },
-    // filtro para a barra de pesquisa aceitar tanto nome quanto ID's
     computed: {
+      // filtro para a barra de pesquisa aceitar tanto nome quanto ID's
       filteredPokemons: function () {
         if (this.pagesCount !== localStorage.length) {
           setTimeout(function () {
@@ -115,6 +93,7 @@
 <style scoped>
   img {
     max-width: 200px;
+    margin: 15px;
   }
 
   .main-holder {

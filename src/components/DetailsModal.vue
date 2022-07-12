@@ -1,8 +1,34 @@
 <template>
+  <!-- ainda não implementado -->
   <div class="modal-overlay">
     <div class="modal">
       <p>Prototipo</p>
       <button>Sair</button>
+      <!-- span com background personalizado para cada tipo de pokemon -->
+      <!-- <span class="type"
+          v-for="(type, index) in pokemon.types"
+          v-bind:style="type.type.name=='normal' ? 'background:#A8A878' :
+          type.type.name=='fighting' ? 'background:#C03028' :
+          type.type.name=='flying' ? 'background:#A890F0' :
+          type.type.name=='poison' ? 'background:#A040A0' :
+          type.type.name=='ground' ? 'background:#E0C068' :
+          type.type.name=='rock' ? 'background:#B8A038' :
+          type.type.name=='bug' ? 'background:#A8B820' :
+          type.type.name=='ghost' ? 'background:#705898' :
+          type.type.name=='steel' ? 'background:#B8B8D0' :
+          type.type.name=='fire' ? 'background:#F08030' :
+          type.type.name=='water' ? 'background:#6890F0' :
+          type.type.name=='grass' ? 'background:#78C850' :
+          type.type.name=='electric' ? 'background:#F8D030' :
+          type.type.name=='psychic' ? 'background:#F85888' :
+          type.type.name=='ice' ? 'background:#98D8D8' :
+          type.type.name=='dragon' ? 'background:#7038F8' :
+          type.type.name=='dark' ? 'background:#68A090' :
+          type.type.name=='fairy' ? 'background:#EE99AC' :
+          type.type.name=='unknown' ? 'background:#68A090' : 
+          'background:grey'
+          " 
+          :key="index">{{type.type.name}}</span> -->
     </div>
     <div class="close" @click="$emit('close-modal')">
       <button class="close-img">Fechar</button>
@@ -26,6 +52,7 @@
     display: flex;
     justify-content: center;
     background-color: rgba(0, 0, 0, 0.2);
+    display: none;
   }
 
   .modal {

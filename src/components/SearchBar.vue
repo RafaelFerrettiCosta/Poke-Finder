@@ -5,29 +5,13 @@
     </div>
 
     <div class="options">
-      <div class="container-type filter">
-        <label for="type">Tipo</label>
-        <select name="type" id="type">
-          <option value="">Todos</option>
-          <option v-for="t in types" :key="t.name" :value="t.name">{{t.name}}</option>
-        </select>
-      </div>
-
-      <div class="container-gen filter">
-        <label for="generation">Geração</label>
-        <select name="type" id="generation">
-          <option value="">Todas</option>
-          <option v-for="g in gens" :key="g.name" :value="g.name">{{g.name}}</option>
-        </select>
-      </div>
-
       <div class="container-orderby filter">
         <label for="order-by">Ordenar por</label>
         <select name="type" id="type">
           <option value="id">ID [Menor-Maior]</option>
-          <option value="rev-id">ID [Maior-Menor]</option>
+          <!-- <option value="rev-id">ID [Maior-Menor]</option>
           <option value="name">Nome [A-Z]</option>
-          <option value="rev-name">Nome [Z-A]</option>
+          <option value="rev-name">Nome [Z-A]</option> -->
         </select>
       </div>
 
@@ -50,11 +34,7 @@
     },
     data() {
       return {
-        search: '',
-        type: 'Todos',
-        gen: 'Todas',
-        types: [],
-        gens: []
+        search: ''
       }
     },
     mounted() {
@@ -98,9 +78,8 @@
   }
 
   .options {
-    display: flex;
-    justify-content: space-between;
-    gap: 80px;
+    max-width: 1000px;
+    margin: 0 auto;
     flex-wrap: nowrap;
   }
 

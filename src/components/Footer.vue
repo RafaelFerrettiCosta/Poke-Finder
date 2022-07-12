@@ -15,10 +15,10 @@
     <div class="thanks-to">
       <span class="short-t">Powered by</span>
       <div class="links">
-        <a href="https://binds.co">
+        <a href="https://binds.co" target="_blank">
           <img class="binds" src="../assets/bindsco.svg" alt="">
         </a>
-        <a href="https://pokeapi.co">
+        <a href="https://pokeapi.co" target="_blank">
           <img class="binds" src="../assets/pokeapi.png" alt="">
         </a>
       </div>
@@ -70,10 +70,9 @@
     align-self: center;
   }
 
-  .links{
+  .links {
     display: flex;
     align-items: center;
     gap: 5px;
   }
-
 </style>
