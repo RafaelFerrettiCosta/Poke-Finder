@@ -1,12 +1,11 @@
 <template>
   <div class="modal-overlay">
     <div class="modal">
-      <h6>Saved!</h6>
-      <p>Your Details have been saved Successfully</p>
-      <button>Go Home</button>
+      <p>Prototipo</p>
+      <button>Sair</button>
     </div>
-    <div class="close" @click="$emit('close-modal')" >
-      <button class="close-img">fechar</button>
+    <div class="close" @click="$emit('close-modal')">
+      <button class="close-img">Fechar</button>
     </div>
   </div>
 </template>
@@ -19,56 +18,52 @@
 
 <style scoped>
   .modal-overlay {
-  position: fixed;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  display: flex;
-  justify-content: center;
-  background-color: rgba(0, 0, 0, 0.2);
-}
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: center;
+    background-color: rgba(0, 0, 0, 0.2);
+  }
 
-.modal {
-  text-align: center;
-  background-color: white;
-  height: 500px;
-  width: 500px;
-  margin-top: 10%;
-  padding: 60px 0;
-  border-radius: 20px;
-}
-.close {
-  margin: 10% 0 0 16px;
-  cursor: pointer;
-}
+  .modal {
+    text-align: center;
+    background-color: white;
+    height: 500px;
+    width: 500px;
+    margin-top: 10%;
+    padding: 60px 0;
+    border-radius: 20px;
+  }
 
-.close-img {
-  width: 25px;
-}
+  .close {
+    margin: 10% 0 0 16px;
+    cursor: pointer;
+  }
 
-.check {
-  width: 150px;
-}
+  .close-img {
+    width: 25px;
+  }
 
-h6 {
-  font-weight: 500;
-  font-size: 28px;
-  margin: 20px 0;
-}
+  .check {
+    width: 150px;
+  }
 
-p {
-  font-size: 16px;
-  margin: 20px 0;
-}
 
-button {
-  background-color: #ac003e;
-  width: 150px;
-  height: 40px;
-  color: white;
-  font-size: 14px;
-  border-radius: 16px;
-  margin-top: 50px;
-}
+  p {
+    font-size: 16px;
+    margin: 20px 0;
+  }
+
+  button {
+    background-color: var(--color-red);
+    width: 150px;
+    height: 40px;
+    color: white;
+    font-size: 14px;
+    border-radius: 16px;
+    margin-top: 50px;
+  }
 </style>

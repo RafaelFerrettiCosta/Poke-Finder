@@ -48,24 +48,22 @@
     components: {
       Table,
     },
-    data(){
+    data() {
       return {
-        search:'',
-        type:'Todos',
-        gen:'Todas',
+        search: '',
+        type: 'Todos',
+        gen: 'Todas',
         types: [],
-        gens:[]
+        gens: []
       }
     },
     mounted() {
-        api.get('https://pokeapi.co/api/v2/type/').then(response => {
-          console.log(response.data.results);
-          this.types=(response.data.results);    
-        });
-        api.get('https://pokeapi.co/api/v2/generation/').then(response => {
-          console.log(response.data.results);
-          this.gens=(response.data.results);    
-        });
+      api.get('https://pokeapi.co/api/v2/type/').then(response => {
+        this.types = (response.data.results);
+      });
+      api.get('https://pokeapi.co/api/v2/generation/').then(response => {
+        this.gens = (response.data.results);
+      });
     }
   }
 </script>
@@ -104,14 +102,13 @@
     flex-wrap: nowrap;
   }
 
-  option{
+  option {
     text-transform: capitalize;
   }
 
 
 
-  .filter
-  label {
+  .filter label {
     margin-right: 10px;
   }
 </style>
