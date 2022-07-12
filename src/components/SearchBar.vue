@@ -59,9 +59,11 @@
     },
     mounted() {
       api.get('https://pokeapi.co/api/v2/type/').then(response => {
+        console.log(response.data.results);
         this.types = (response.data.results);
       });
       api.get('https://pokeapi.co/api/v2/generation/').then(response => {
+        console.log(response.data.results);
         this.gens = (response.data.results);
       });
     }

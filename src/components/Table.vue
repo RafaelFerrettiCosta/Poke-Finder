@@ -1,6 +1,10 @@
 <template>
   <!-- construtor dos itens da tabela -->
   <div class="main-holder">
+    <div class="button-holder">
+      <button class="page-button" v-for="index in pagesCount" v-if="index<10" @click="setIndex(index)">0{{index}}</button>
+      <button class="page-button" v-for="index in pagesCount" v-if="index>=10" @click="setIndex(index)">{{index}}</button>
+    </div>
     <div class="table">
       <div class="pokemon-holder" v-for='(pokemon, index) in filteredPokemons' :key='pokemon.name' @click="showModal = true">
         <span class="id-text">#{{pokemon.url.slice(34,-1)}}</span>
@@ -36,6 +40,10 @@
 
       </div>
     </div>
+    <div class="button-holder">
+      <button class="page-button" v-for="index in pagesCount" v-if="index<10" @click="setIndex(index)">0{{index}}</button>
+      <button class="page-button" v-for="index in pagesCount" v-if="index>=10" @click="setIndex(index)">{{index}}</button>
+    </div>
   </div>
 </template>
 
@@ -48,58 +56,55 @@
     components: {
       DetailsModal
     },
+    methods: {
+      setIndex: function (i) {
+        this.index = i;
+        console.log(this.index)
+      }
+    },
     data() {
       return {
         pokemons: [],
         counter: [],
-        showModal: false
+        showModal: false,
+        pagesCount: 12,
+        index: 1
       }
     },
     mounted() {
-      //loop feito para acessar a 'camada especifica' de cada pokemon na API
       async function montarLocalStorage() {
-        var page = 0
+        var page = 1
         let result = await api.get('https://pokeapi.co/api/v2/pokemon/?offset=0&limit=100')
         var next = await result.data.next;
-        localStorage.setItem("pokelist0", JSON.stringify(result.data.results))
+        localStorage.setItem("pokelist" + page, JSON.stringify(result.data.results))
         while (next !== null) {
           page++;
           result = await api.get(next)
           next = await result.data.next;
           localStorage.setItem("pokelist" + page, JSON.stringify(result.data.results))
-
         }
       }
       montarLocalStorage();
-      // console.log("vencemos e esta AQUI" + holder)
-      // api.get('https://pokeapi.co/api/v2/pokemon/?offset=0&limit=9999').then(response => {
-      //   this.counter = response.data.results
-      //   // this.counter.length
-      // }).then(r => {
-      //   for (var p = 1; p <= 50; p++) {
-      //     api.get('https://pokeapi.co/api/v2/pokemon/' + p + '').then(response => {
-      //       console.log(response.data)
-
-      //       this.pokemons.push(response.data);
-      //       localStorage.pokemonList = JSON.stringify(this.pokemons);
-      //     })
-      //   }
-      // })
-      // console.log(this.pokemons)
-      // localStorage.setItem("pokelist", JSON.stringify(this.pokemons))
-
+      this.pagesCount = localStorage.length;
+      console.log(this.pagesCount)
 
     },
     // filtro para a barra de pesquisa aceitar tanto nome quanto ID's
     computed: {
       filteredPokemons: function () {
-        this.pokemons = localStorage.getItem("pokelist0")
+        if (this.pagesCount !== localStorage.length) {
+          setTimeout(function () {
+            window.location.reload(1);
+          }, 1000);
+        }
+        this.pokemons = localStorage.getItem("pokelist" + this.index)
         this.pokemons = JSON.parse(this.pokemons || '[]')
         var pokeID = ''
 
         return this.pokemons.filter((pokemon) => {
           pokeID = (pokemon.url.slice(34, -1))
           return pokemon.name.match(this.text) || JSON.stringify(pokeID).match(this.text);
+          this.pagesCount = localStorage.length
         });
       }
     }
@@ -163,5 +168,25 @@
     margin: 10px 0px;
     border: 1px solid transparent;
     border-radius: 4px;
+  }
+
+  .button-holder {
+    width: 100%;
+    display: flex;
+    align-content: center;
+    justify-content: center;
+    gap: 20px;
+  }
+
+  .page-button {
+    padding: 5px 10px;
+    background: var(--color-red);
+    color: white;
+    border: 2px solid var(--color-white);
+    border-radius: 4px;
+  }
+
+  .page-button:hover {
+    cursor: pointer;
   }
 </style>
